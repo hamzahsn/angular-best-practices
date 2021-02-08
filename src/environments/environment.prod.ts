@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  CARGO_API: 'https://imc-fe-challenge.herokuapp.com/',
 };
