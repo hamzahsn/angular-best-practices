@@ -1,19 +1,21 @@
 <mat-card>
-  <mat-card-title>Login</mat-card-title>
+  <mat-card-title>
+    <img src="assets/images/logo.png" alt="itsMyCargo logo" width="150" height="auto">
+  </mat-card-title>
   <mat-card-content>
-    <form>
+    <form [formGroup]="loginForm">
       <p>
-        <mat-form-field>
-          <input type="text" matInput placeholder="Username" formControlName="username">
+        <mat-form-field appearance="outline">
+          <input type="email" matInput placeholder="Email" formControlName="email">
         </mat-form-field>
       </p>
       <p>
-        <mat-form-field>
+        <mat-form-field appearance="outline">
           <input type="password" matInput placeholder="Password" formControlName="password">
         </mat-form-field>
       </p>
       <div class="button">
-        <button type="submit" mat-button>Login</button>
+        <button type="submit" mat-flat-button color="primary">Login</button>
       </div>
     </form>
   </mat-card-content>
