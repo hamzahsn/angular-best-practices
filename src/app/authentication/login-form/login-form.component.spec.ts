@@ -1,15 +1,31 @@
-import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { Router } from '@angular/router';
 
+import { of, throwError } from 'rxjs';
+
+import { AuthenticationService } from 'app/core/services';
 import { LoginFormComponent } from './login-form.component';
+
+@Component({})
+class DummyComponent {}
 
 describe('LoginFormComponent', () => {
   let component: LoginFormComponent;
   let fixture: ComponentFixture<LoginFormComponent>;
   let debugElement: DebugElement;
+  let authService: AuthenticationService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [
+        HttpClientTestingModule,
+        RouterTestingModule.withRoutes([
+          { path: 'shipements', component: DummyComponent },
+        ]),
+      ],
       declarations: [LoginFormComponent],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -17,6 +33,7 @@ describe('LoginFormComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginFormComponent);
+    authService = TestBed.inject(AuthenticationService);
     component = fixture.componentInstance;
     debugElement = fixture.debugElement;
     fixture.detectChanges();
@@ -105,4 +122,35 @@ describe('LoginFormComponent', () => {
     expect(component.loginForm.valid).toBeFalsy();
     expect(submitButton.disabled).toBeTruthy();
   });
+
+  it('should display error message when credentials are not valid', () => {
+    spyOn(authService, 'login').and.callFake(() => {
+      return throwError(new Error('Fake error'));
+    });
+
+    component.ngOnInit();
+    fixture.detectChanges();
+    let errorMessage = debugElement.nativeElement.querySelector('#error-msg');
+    expect(errorMessage).toBeFalsy();
+
+    component.login();
+    fixture.detectChanges();
+
+    errorMessage = debugElement.nativeElement.querySelector('#error-msg');
+    expect(errorMessage).toBeTruthy();
+    expect(errorMessage.innerText).toEqual('Incorrect email or password.');
+  });
+
+  it('should redirect to shipments page when successfully login', inject(
+    [Router],
+    (router: Router) => {
+      spyOn(authService, 'login').and.returnValue(of(true));
+      const routerSpy = spyOn(router, 'navigate').and.callThrough();
+
+      component.login();
+      fixture.detectChanges();
+
+      expect(routerSpy).toHaveBeenCalledWith(['/shipements']);
+    }
+  ));
 });
