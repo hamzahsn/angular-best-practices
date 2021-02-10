@@ -7,15 +7,20 @@
       <p>
         <mat-form-field appearance="outline">
           <input type="email" matInput placeholder="Email" formControlName="email">
+          <mat-error *ngIf="formControl.email.errors">
+            <span *ngIf="formControl.email.errors?.required">Email is required.</span>
+            <span *ngIf="formControl.email.errors?.pattern">Email is not valid.</span>
+          </mat-error>
         </mat-form-field>
       </p>
       <p>
         <mat-form-field appearance="outline">
           <input type="password" matInput placeholder="Password" formControlName="password">
+          <mat-error *ngIf="formControl.password.errors?.required">Password is required.</mat-error>
         </mat-form-field>
       </p>
       <div class="button">
-        <button type="submit" mat-flat-button color="primary">Login</button>
+        <button type="submit" mat-flat-button color="primary" [disabled]="!loginForm.valid">Login</button>
       </div>
     </form>
   </mat-card-content>
