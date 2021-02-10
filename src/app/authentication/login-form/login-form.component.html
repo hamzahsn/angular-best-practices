@@ -2,7 +2,7 @@
   <mat-card-title>
     <img src="assets/images/logo.png" alt="itsMyCargo logo" width="150" height="auto">
   </mat-card-title>
-  <mat-card id="error-msg" *ngIf="hasError">Incorrect email or password.</mat-card>
+  <mat-card id="error-msg" class="error-msg" *ngIf="hasError">Incorrect email or password.</mat-card>
   <mat-card-content>
     <form [formGroup]="loginForm" (ngSubmit)="login()">
       <p>
