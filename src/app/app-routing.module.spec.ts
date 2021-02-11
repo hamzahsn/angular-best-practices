@@ -7,6 +7,7 @@ import {
   ComponentFixture,
   flush,
   waitForAsync,
+  inject,
 } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, NgZone } from '@angular/core';
@@ -18,6 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { routes } from './app-routing.module';
 import { AuthenticationComponent } from './authentication/authentication.component';
+import { AuthenticationService } from './core/services';
 
 describe('AppRoutingModule', () => {
   let injector: TestBed;
@@ -54,9 +56,21 @@ describe('AppRoutingModule', () => {
 
   afterEach(() => fixture.destroy());
 
-  it('navigate to `/` takes you to `/login`', fakeAsync(() => {
-    ngZone.run(() => router.navigate(['/']));
-    flush();
-    expect(location.path()).toBe('/login');
-  }));
+  it('navigate to `/` takes you to `/login` when not logged in', fakeAsync(
+    inject([AuthenticationService], (authService: AuthenticationService) => {
+      spyOn(authService, 'isAuthenticated').and.returnValue(false);
+      ngZone.run(() => router.navigate(['/']));
+      flush();
+      expect(location.path()).toBe('/login');
+    })
+  ));
+
+  it('navigate to `/` takes you to `/shipments` when logged in', fakeAsync(
+    inject([AuthenticationService], (authService: AuthenticationService) => {
+      spyOn(authService, 'isAuthenticated').and.returnValue(true);
+      ngZone.run(() => router.navigate(['/']));
+      flush();
+      expect(location.path()).toBe('/shipments');
+    })
+  ));
 });
