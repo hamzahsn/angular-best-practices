@@ -4,6 +4,8 @@ import {
   HttpClientTestingModule,
 } from '@angular/common/http/testing';
 
+import { CookieService } from 'ngx-cookie-service';
+
 import { environment } from '@env/environment';
 import { AuthenticationService } from './authentication.service';
 import { TokenService } from './token.service';
@@ -11,6 +13,7 @@ import { TokenService } from './token.service';
 describe('AuthenticationService', () => {
   let service: AuthenticationService;
   let tokenService: TokenService;
+  let cookieService: CookieService;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
@@ -20,6 +23,7 @@ describe('AuthenticationService', () => {
     });
     service = TestBed.inject(AuthenticationService);
     tokenService = TestBed.inject(TokenService);
+    cookieService = TestBed.inject(CookieService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -63,14 +67,14 @@ describe('AuthenticationService', () => {
   });
 
   it('should return false when there is a no token stored in the cookies', () => {
-    spyOn(tokenService, 'getToken').and.returnValue('');
+    spyOn(cookieService, 'get').and.returnValue('');
 
     const result = service.isAuthenticated();
     expect(result).toBeFalsy();
   });
 
   it('should return true when there is a token stored in the cookies', () => {
-    spyOn(tokenService, 'getToken').and.returnValue('mysecrettoken');
+    spyOn(cookieService, 'get').and.returnValue('mysecrettoken');
 
     const result = service.isAuthenticated();
     expect(result).toBeTruthy();
