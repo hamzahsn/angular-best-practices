@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AuthenticationModule } from './authentication/authentication.module';
 import { CoreModule } from './core/core.module';
+import { ShipmentsModule } from './shipments/shipments.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -16,6 +17,7 @@ import { CoreModule } from './core/core.module';
     BrowserAnimationsModule,
 
     AuthenticationModule,
+    ShipmentsModule,
     CoreModule,
   ],
   providers: [],
