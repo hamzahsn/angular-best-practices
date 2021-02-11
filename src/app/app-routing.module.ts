@@ -5,9 +5,14 @@ import { AuthenticationComponent } from './authentication/authentication.compone
 import { ShipmentsComponent } from './shipments/shipments.component';
 import { AuthGuard } from './core/guards';
 
-const routes: Routes = [
+export const routes: Routes = [
   {
     path: '',
+    redirectTo: 'login',
+    pathMatch: 'full',
+  },
+  {
+    path: 'login',
     component: AuthenticationComponent,
   },
   {
