@@ -23,7 +23,7 @@ describe('LoginFormComponent', () => {
       imports: [
         HttpClientTestingModule,
         RouterTestingModule.withRoutes([
-          { path: 'shipements', component: DummyComponent },
+          { path: 'shipments', component: DummyComponent },
         ]),
       ],
       declarations: [LoginFormComponent],
@@ -150,7 +150,7 @@ describe('LoginFormComponent', () => {
       component.login();
       fixture.detectChanges();
 
-      expect(routerSpy).toHaveBeenCalledWith(['/shipements']);
+      expect(routerSpy).toHaveBeenCalledWith(['/shipments']);
     }
   ));
 });

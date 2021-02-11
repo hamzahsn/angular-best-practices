@@ -35,7 +35,7 @@ export class LoginFormComponent implements OnInit {
 
   login(): void {
     this.authService.login(this.loginForm.value).subscribe(
-      (res) => this.router.navigate(['/shipements']),
+      (res) => this.router.navigate(['/shipments']),
       (error) => (this.hasError = true)
     );
   }
