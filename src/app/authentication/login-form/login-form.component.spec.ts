@@ -146,7 +146,11 @@ describe('LoginFormComponent', () => {
   it('should redirect to shipments page when successfully login', inject(
     [Router],
     (router: Router) => {
-      spyOn(authService, 'login').and.callFake(() => of());
+      const fakeTokenResult = {
+        access_token: 'myaccesstoken',
+        token_type: 'Bearer',
+      };
+      spyOn(authService, 'login').and.callFake(() => of(fakeTokenResult));
       const routerSpy = spyOn(router, 'navigate').and.callThrough();
 
       component.login();
