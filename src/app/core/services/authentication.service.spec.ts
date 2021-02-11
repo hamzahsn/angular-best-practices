@@ -75,4 +75,19 @@ describe('AuthenticationService', () => {
     const result = service.isAuthenticated();
     expect(result).toBeTruthy();
   });
+
+  it('should save the token in the cookies when login success', () => {
+    const tokenSpy = spyOn(tokenService, 'setToken').and.callThrough();
+    const credentials = {
+      email: 'user@host.com',
+      password: 'supersecretpassword',
+    };
+
+    service.login(credentials).subscribe();
+
+    const req = httpMock.expectOne(`${environment.CARGO_API}/oauth/token`);
+    req.flush({});
+
+    expect(tokenSpy).toHaveBeenCalled();
+  });
 });
