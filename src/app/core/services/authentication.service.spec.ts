@@ -6,9 +6,11 @@ import {
 
 import { environment } from '@env/environment';
 import { AuthenticationService } from './authentication.service';
+import { TokenService } from './token.service';
 
 describe('AuthenticationService', () => {
   let service: AuthenticationService;
+  let tokenService: TokenService;
   let httpMock: HttpTestingController;
 
   beforeEach(() => {
@@ -17,6 +19,7 @@ describe('AuthenticationService', () => {
       providers: [AuthenticationService],
     });
     service = TestBed.inject(AuthenticationService);
+    tokenService = TestBed.inject(TokenService);
     httpMock = TestBed.inject(HttpTestingController);
   });
 
@@ -57,5 +60,19 @@ describe('AuthenticationService', () => {
       grant_type: 'password',
     });
     req.flush([]);
+  });
+
+  it('should return false when there is a no token stored in the cookies', () => {
+    spyOn(tokenService, 'getToken').and.returnValue('');
+
+    const result = service.isAuthenticated();
+    expect(result).toBeFalsy();
+  });
+
+  it('should return true when there is a token stored in the cookies', () => {
+    spyOn(tokenService, 'getToken').and.returnValue('mysecrettoken');
+
+    const result = service.isAuthenticated();
+    expect(result).toBeTruthy();
   });
 });
