@@ -1,7 +1,8 @@
-import { Component, DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, DebugElement } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { of, throwError } from 'rxjs';
@@ -22,12 +23,13 @@ describe('LoginFormComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
+        ReactiveFormsModule,
         RouterTestingModule.withRoutes([
           { path: 'shipments', component: DummyComponent },
         ]),
       ],
       declarations: [LoginFormComponent],
-      schemas: [NO_ERRORS_SCHEMA],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
     }).compileComponents();
   });
 
