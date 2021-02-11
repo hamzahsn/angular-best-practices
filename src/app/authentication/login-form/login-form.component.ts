@@ -1,15 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
+import { Subject } from 'rxjs';
+
 import { AuthenticationService } from 'app/core/services';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login-form',
   templateUrl: './login-form.component.html',
   styleUrls: ['./login-form.component.scss'],
 })
-export class LoginFormComponent implements OnInit {
+export class LoginFormComponent implements OnInit, OnDestroy {
+  destroy$ = new Subject<void>();
   loginForm: FormGroup;
   hasError = false;
   emailPattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
@@ -34,9 +38,17 @@ export class LoginFormComponent implements OnInit {
   ngOnInit(): void {}
 
   login(): void {
-    this.authService.login(this.loginForm.value).subscribe(
-      (res) => this.router.navigate(['/shipments']),
-      (error) => (this.hasError = true)
-    );
+    this.authService
+      .login(this.loginForm.value)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (res) => this.router.navigate(['/shipments']),
+        (error) => (this.hasError = true)
+      );
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
