@@ -16,6 +16,12 @@ export class ApiService {
     throw new Error(error);
   }
 
+  get(path: string): Observable<any> {
+    return this.http
+      .get(`${environment.CARGO_API}${path}`)
+      .pipe(catchError(this.formatErrors));
+  }
+
   post(
     path: string,
     body: Record<string, string | number> = {}
