@@ -8,6 +8,7 @@ import {
   HttpClientTestingModule,
   HttpTestingController,
 } from '@angular/common/http/testing';
+import { TokenService } from '../services';
 
 describe('ErrorInterceptor', () => {
   let interceptor: ErrorInterceptor;
@@ -36,9 +37,10 @@ describe('ErrorInterceptor', () => {
   });
 
   it('should redirect to login page when receiving 401', inject(
-    [HttpClient, Router],
-    (http: HttpClient, router: Router) => {
+    [HttpClient, Router, TokenService],
+    (http: HttpClient, router: Router, tokenService: TokenService) => {
       const routerSpy = spyOn(router, 'navigate').and.callThrough();
+      const tokenSpy = spyOn(tokenService, 'clearToken').and.callThrough();
 
       http.get<Data>('testUrl').subscribe();
 
@@ -49,6 +51,7 @@ describe('ErrorInterceptor', () => {
         statusText: 'Unauthorized',
       });
 
+      expect(tokenSpy).toHaveBeenCalled();
       expect(routerSpy).toHaveBeenCalledWith(['/']);
     }
   ));
