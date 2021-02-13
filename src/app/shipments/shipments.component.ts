@@ -29,9 +29,24 @@ export class ShipmentsComponent implements OnInit, OnDestroy {
       .list()
       .pipe(takeUntil(this.destroy$))
       .subscribe((data) => {
-        this.shipmentsData = data;
+        this.shipmentsData = this.getLastShipments(data);
         this.countShipments(data);
       });
+  }
+
+  getLastShipments(data: Shipment[]): Shipment[] {
+    const today = new Date();
+    const lastDays = this.getDateFrom(-5);
+    const result: Shipment[] = [];
+
+    data.forEach((shipment) => {
+      const estimatedArrivalTime = new Date(shipment.planned_eta);
+      if (estimatedArrivalTime <= today && estimatedArrivalTime >= lastDays) {
+        result.push(shipment);
+      }
+    });
+
+    return result;
   }
 
   countShipments(data: Shipment[]): void {

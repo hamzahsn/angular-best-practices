@@ -82,4 +82,29 @@ describe('ShipmentsComponent', () => {
       expect(component.inMonthCounter).toEqual(9);
     }
   ));
+  it('should return last 5 shipments have been made', inject(
+    [ShipmentsService],
+    (shipmentsService: ShipmentsService) => {
+      jasmine.clock().mockDate(new Date('2020-10-10'));
+      const dataMock = [
+        // shipments made in month
+        { planned_eta: '2020-09-23' },
+        { planned_eta: '2020-10-01' },
+        { planned_eta: '2020-10-01' },
+        // shipments made in 5 days
+        { planned_eta: '2020-10-05' },
+        { planned_eta: '2020-10-06' },
+        { planned_eta: '2020-10-07' },
+        { planned_eta: '2020-10-10' },
+        { planned_eta: '2020-10-10' },
+      ] as Shipment[];
+
+      spyOn(shipmentsService, 'list').and.returnValue(of(dataMock));
+
+      component.ngOnInit();
+      fixture.detectChanges();
+
+      expect(component.shipmentsData.length).toEqual(5);
+    }
+  ));
 });

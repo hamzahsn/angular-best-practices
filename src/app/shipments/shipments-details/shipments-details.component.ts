@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Shipment } from 'app/shared/models';
 
 @Component({
   selector: 'app-shipments-details',
@@ -16,7 +17,10 @@ export class ShipmentsDetailsComponent implements OnInit {
     'planned_etd',
     'cargo_units',
   ];
-  dataSource = [];
+
+  @Input()
+  dataSource: Shipment[] = [];
+
   constructor() {}
 
   ngOnInit(): void {}
