@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatTableModule } from '@angular/material/table';
 
 import { ShipmentsDetailsComponent } from './shipments-details.component';
 
@@ -8,9 +9,9 @@ describe('ShipmentsDetailsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ShipmentsDetailsComponent ]
-    })
-    .compileComponents();
+      imports: [MatTableModule],
+      declarations: [ShipmentsDetailsComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
