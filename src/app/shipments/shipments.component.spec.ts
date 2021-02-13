@@ -77,9 +77,9 @@ describe('ShipmentsComponent', () => {
       component.ngOnInit();
       fixture.detectChanges();
 
-      expect(component.yesterdayCount).toEqual(2);
-      expect(component.lastWeekCount).toEqual(6);
-      expect(component.lastMonthCount).toEqual(9);
+      expect(component.yesterdayCounter).toEqual(2);
+      expect(component.inWeekCounter).toEqual(6);
+      expect(component.inMonthCounter).toEqual(9);
     }
   ));
 });

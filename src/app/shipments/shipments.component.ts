@@ -14,9 +14,9 @@ import { Shipment } from 'app/shared/models';
 export class ShipmentsComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
   shipmentsData: Shipment[] = [];
-  yesterdayCount = 0;
-  lastWeekCount = 0;
-  lastMonthCount = 0;
+  yesterdayCounter = 0;
+  inWeekCounter = 0;
+  inMonthCounter = 0;
 
   constructor(private shipmentsService: ShipmentsService) {}
 
@@ -59,9 +59,9 @@ export class ShipmentsComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.yesterdayCount = counter.yesterday;
-    this.lastWeekCount = counter.week;
-    this.lastMonthCount = counter.month;
+    this.yesterdayCounter = counter.yesterday;
+    this.inWeekCounter = counter.week;
+    this.inMonthCounter = counter.month;
   }
 
   getDateFrom(daysDifference: number): Date {
