@@ -21,4 +21,9 @@ export class TokenService {
     this.cookieService.set('tokenType', `${token_type}`);
     this.cookieService.set('accessToken', `${access_token}`);
   }
+
+  clearToken(): void {
+    this.cookieService.delete('tokenType');
+    this.cookieService.delete('accessToken');
+  }
 }

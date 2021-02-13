@@ -49,4 +49,13 @@ describe('TokenService', () => {
     const result = service.getToken();
     expect(result).toEqual(expectedToken);
   });
+
+  it('should remove the stored token from the cookies', () => {
+    const cookieSpy = spyOn(cookieService, 'delete').and.callThrough();
+
+    service.clearToken();
+
+    expect(cookieSpy).toHaveBeenCalledWith('tokenType');
+    expect(cookieSpy).toHaveBeenCalledWith('accessToken');
+  });
 });
