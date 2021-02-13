@@ -82,6 +82,7 @@ describe('ShipmentsComponent', () => {
       expect(component.inMonthCounter).toEqual(9);
     }
   ));
+
   it('should return last 5 shipments have been made', inject(
     [ShipmentsService],
     (shipmentsService: ShipmentsService) => {
