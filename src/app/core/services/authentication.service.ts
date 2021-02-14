@@ -47,4 +47,13 @@ export class AuthenticationService {
     this.authenticated.next(isAuthenticated);
     return this.authenticated.asObservable();
   }
+
+  public logout(): Observable<any> {
+    return this.apiService.delete('/oauth/signout').pipe(
+      map((res) => {
+        this.tokenService.clearToken();
+        return res;
+      })
+    );
+  }
 }

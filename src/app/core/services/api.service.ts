@@ -30,4 +30,10 @@ export class ApiService {
       .post(`${environment.CARGO_API}${path}`, body)
       .pipe(catchError(this.formatErrors));
   }
+
+  delete(path: string): Observable<any> {
+    return this.http
+      .delete(`${environment.CARGO_API}${path}`)
+      .pipe(catchError(this.formatErrors));
+  }
 }

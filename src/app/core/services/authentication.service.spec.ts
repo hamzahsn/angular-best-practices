@@ -106,4 +106,19 @@ describe('AuthenticationService', () => {
 
     service.isAuthenticatedV2().subscribe((res) => expect(res).toBeFalsy());
   });
+
+  it('use correct endpoint when logged out', () => {
+    const tokenSpy = spyOn(tokenService, 'clearToken').and.callThrough();
+    const expectedEndpoint = `${environment.CARGO_API}/oauth/signout`;
+
+    service.logout().subscribe();
+
+    const req = httpMock.expectOne(expectedEndpoint);
+
+    expect(req.request.method).toBe('DELETE');
+    expect(req.request.url).toEqual(expectedEndpoint);
+    req.flush([]);
+
+    expect(tokenSpy).toHaveBeenCalled();
+  });
 });
