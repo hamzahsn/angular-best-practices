@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -13,6 +13,8 @@ import { Token } from 'app/shared/models';
   providedIn: 'root',
 })
 export class AuthenticationService {
+  authenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
   constructor(
     private apiService: ApiService,
     private tokenService: TokenService,
@@ -37,5 +39,12 @@ export class AuthenticationService {
 
   public isAuthenticated(): boolean {
     return !!this.cookieService.get('accessToken');
+  }
+
+  public isAuthenticatedV2(): Observable<boolean> {
+    const isAuthenticated = this.isAuthenticated();
+
+    this.authenticated.next(isAuthenticated);
+    return this.authenticated.asObservable();
   }
 }

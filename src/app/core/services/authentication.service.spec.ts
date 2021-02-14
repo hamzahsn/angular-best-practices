@@ -94,4 +94,16 @@ describe('AuthenticationService', () => {
 
     expect(tokenSpy).toHaveBeenCalled();
   });
+
+  it('should return true when isAuthenticated is true', () => {
+    spyOn(service, 'isAuthenticated').and.returnValue(true);
+
+    service.isAuthenticatedV2().subscribe((res) => expect(res).toBeTruthy());
+  });
+
+  it('should return false when isAuthenticated is false', () => {
+    spyOn(service, 'isAuthenticated').and.returnValue(false);
+
+    service.isAuthenticatedV2().subscribe((res) => expect(res).toBeFalsy());
+  });
 });
