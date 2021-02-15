@@ -52,10 +52,8 @@ describe('LoginFormComponent', () => {
     let emailErrors = emailControl.errors || {};
 
     expect(emailControl.valid).toBeFalsy();
-    expect(emailErrors.pattern).toBeTruthy();
-    expect(emailErrors.pattern.requiredPattern).toEqual(
-      '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$'
-    );
+    expect(emailErrors.emailDomain).toBeTruthy();
+    expect(emailErrors.emailDomain).toEqual('name@hostname.domain');
 
     emailControl.setValue('');
     emailErrors = emailControl.errors || {};

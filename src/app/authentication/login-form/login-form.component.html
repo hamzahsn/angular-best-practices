@@ -10,7 +10,7 @@
           <input type="email" matInput placeholder="Email" formControlName="email">
           <mat-error *ngIf="formControl.email.errors">
             <span *ngIf="formControl.email.errors?.required">Email is required.</span>
-            <span *ngIf="formControl.email.errors?.pattern">Email is not valid.</span>
+            <span *ngIf="formControl.email.errors?.emailDomain">Email is not valid.</span>
           </mat-error>
         </mat-form-field>
       </p>
