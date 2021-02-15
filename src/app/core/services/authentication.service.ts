@@ -13,7 +13,9 @@ import { Token } from 'app/shared/models';
   providedIn: 'root',
 })
 export class AuthenticationService {
-  authenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private authenticated$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
 
   constructor(
     private apiService: ApiService,
@@ -32,6 +34,7 @@ export class AuthenticationService {
       .pipe(
         map((res) => {
           this.tokenService.setToken(res);
+          this.authenticated$.next(true);
           return res;
         })
       ) as Observable<Token>;
@@ -42,16 +45,14 @@ export class AuthenticationService {
   }
 
   public isAuthenticatedV2(): Observable<boolean> {
-    const isAuthenticated = this.isAuthenticated();
-
-    this.authenticated.next(isAuthenticated);
-    return this.authenticated.asObservable();
+    return this.authenticated$.asObservable();
   }
 
   public logout(): Observable<any> {
     return this.apiService.delete('/oauth/signout').pipe(
       map((res) => {
         this.tokenService.clearToken();
+        this.authenticated$.next(false);
         return res;
       })
     );

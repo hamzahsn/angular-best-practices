@@ -95,16 +95,20 @@ describe('AuthenticationService', () => {
     expect(tokenSpy).toHaveBeenCalled();
   });
 
-  it('should return true when isAuthenticated is true', () => {
-    spyOn(service, 'isAuthenticated').and.returnValue(true);
+  it('should return true when the user correctly logged in', () => {
+    const credentials = {
+      email: 'user@host.com',
+      password: 'supersecretpassword',
+    };
 
-    service.isAuthenticatedV2().subscribe((res) => expect(res).toBeTruthy());
-  });
+    service.login(credentials).subscribe();
 
-  it('should return false when isAuthenticated is false', () => {
-    spyOn(service, 'isAuthenticated').and.returnValue(false);
+    const req = httpMock.expectOne(`${environment.CARGO_API}/oauth/token`);
+    req.flush({});
 
-    service.isAuthenticatedV2().subscribe((res) => expect(res).toBeFalsy());
+    service
+      .isAuthenticatedV2()
+      .subscribe((result) => expect(result).toBeTruthy());
   });
 
   it('use correct endpoint when logged out', () => {
@@ -120,5 +124,16 @@ describe('AuthenticationService', () => {
     req.flush([]);
 
     expect(tokenSpy).toHaveBeenCalled();
+  });
+
+  it('should return false when the user correctly logged out', () => {
+    service.logout().subscribe();
+
+    const req = httpMock.expectOne(`${environment.CARGO_API}/oauth/signout`);
+    req.flush({});
+
+    service
+      .isAuthenticatedV2()
+      .subscribe((result) => expect(result).toBeFalsy());
   });
 });
